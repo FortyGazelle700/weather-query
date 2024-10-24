@@ -1,0 +1,527 @@
+/* Although never used, can be replaces to get the same css for older browsers, that do not support nesting */
+
+/* CSS Custom Variables for theme (in light) */
+:root {
+    --color-background: hsl(210deg 20% 90%);
+    --color-primary: hsl(210deg 50% 60%);
+    --color-secondary: hsl(210deg 50% 30%);
+    --color-surface: hsl(210deg 20% 80%);
+    --color-danger: hsl(0deg 70% 50%);
+
+    --speed-default: 200ms;
+  }
+/* CSS Custom Variables for theme (in dark) */
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+      --color-background: hsl(210deg 20% 10%);
+      --color-primary: hsl(210deg 50% 50%);
+      --color-secondary: hsl(210deg 50% 90%);
+      --color-surface: hsl(210deg 20% 20%);
+      --color-danger: hsl(0deg 70% 60%);
+    }
+  }
+/* Every element is exactly width and height (incl. padding, border, ...) */
+* {
+    box-sizing: border-box;
+}
+/* Set color theme background, and font */
+html {
+    color-scheme: light dark;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background-color: var(--color-background);
+}
+/* Ensure that everything fits, and scrollbar doesn't cause layout shift */
+html, body, main {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    scrollbar-gutter: stable both-edges;
+}
+/* Everything in main part of website */
+main {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    max-width: 80ch;
+    margin-inline: auto;
+}
+/* Title Coloring */
+.title, .plug {
+    cursor: default;
+}
+.title {
+    display: flex;
+    align-items: center;
+}
+.title .primary {
+    color: var(--color-primary);
+}
+.title .secondary {
+    color: var(--color-secondary);
+}
+.plug {
+    font-weight: normal;
+    font-size: 0.8rem;
+    margin: 0;
+    margin-top: -1rem;
+    color: color-mix(in lch, var(--color-secondary), transparent 90%);
+    transition: color ease var(--speed-default);
+}
+.plug:hover {
+    color: var(--color-secondary);
+    transition: color ease 1s 0.4s;
+}
+.plug a {
+    color: inherit;
+}
+/* hints */
+.arrow-hint.pinned {
+    background-color: color-mix(in lch, var(--color-background) 80%, transparent);
+    padding: 0.25rem 1rem;
+    backdrop-filter: blur(10px);
+    border-radius: 1000px;
+    margin-top: auto;
+    position: fixed;
+    bottom: 6rem;
+    font-size: 0.8rem;
+    left: calc(max(1rem, (100vw - 100ch) / 2) + 4rem);
+}
+/* autocomplete input */
+.new-response {
+    position: fixed;
+    bottom: 2rem;
+    display: flex;
+    align-items: center;
+    width: calc(min(100vw, 80ch) - 2rem);
+    background-color: var(--color-surface);
+    outline: 2px solid var(--color-background);
+    border-radius: 10000px;
+    border: 2px solid var(--color-surface);
+    transition: border-bottom var(--speed-default) ease;
+}
+.new-response:has(input:hover) {
+    border-bottom: 2px solid color-mix(in srgb, var(--color-primary) 50%, transparent);
+}
+.new-response:has(input:focus-visible) {
+    border-bottom: 2px solid var(--color-primary);
+}
+.new-response input {
+    flex: 1;
+    font-size: 1em;
+    text-transform: lowercase;
+    width: auto;
+    background-color: transparent;
+    border-width: 0px;
+    padding: 1rem 1.5rem;
+    padding-left: 0.5rem;
+    color: inherit;
+}
+.new-response input:focus-visible {
+    outline: 0;
+}
+.new-response button {
+    margin: 0.5rem;
+}
+/* Autocomplete Submit Button */
+button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10000px;
+    padding: 1rem;
+    font-size: 1rem;
+    background-color: var(--color-primary);
+    border-width: 0px;
+    outline: 2px solid var(--color-primary);
+    outline-offset: 0;
+    transition: outline var(--speed-default) ease, outline-offset var(--speed-default) ease, background-color var(--speed-default) ease;
+    width: 2rem;
+    height: 2rem;
+}
+button.secondary {
+    background-color: var(--color-secondary);
+    outline: 2px solid var(--color-secondary);
+    opacity: 0.5;
+}
+button.secondary self:is(:focus-visible, :hover) {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
+}
+button.secondary:active {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 4px;
+}
+button self:is(:focus-visible, :hover) {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+button:active {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+}
+@media (prefers-color-scheme: light) {
+    button.secondary img {
+        filter: invert(1);
+   }
+}
+@media (prefers-color-scheme: dark) {
+    button.secondary img {
+        filter: invert(0);
+   }
+}
+/* Auto Complete Box */
+.autocomplete {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: hidden;
+    flex-shrink: 0;
+   /* Root & Subquery box styling */
+   /* Rows, and args in autocomplete */
+}
+.autocomplete.subquery {
+    width: 100%;
+}
+.autocomplete:not(.subquery) {
+    flex: 0;
+    position: fixed;
+    bottom: 3.5rem;
+    width: calc(min(100vw, 80ch) - 2rem);
+    max-height: 50vh;
+    padding-top: 0.5rem;
+    padding-bottom: 3rem;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    backdrop-filter: blur(20px);
+    border: 2px solid var(--color-background);
+    margin-inline: -2px;
+    background-color: color-mix(in srgb, color-mix(in srgb, var(--color-background), var(--color-surface)) 80%, transparent);
+    opacity: 1;
+    min-height: max-content;
+    max-height: 80vh;
+    transition: padding-block var(--speed-default), max-height var(--speed-default), opacity var(--speed-default);
+}
+.autocomplete:not(.visible):not(.subquery) {
+    opacity: 0;
+    max-height: 0;
+    padding-block: 0;
+    pointer-events: none;
+}
+.autocomplete .row {
+    background-color: transparent;
+    display: flex;
+    gap: 0.25rem;
+    width: 100%;
+    max-width: 100%;
+    height: 2.25rem;
+    justify-content: start;
+    align-items: center;
+    padding-inline: 1.25rem;
+    outline: 0;
+    border-radius: 0;
+    width: 100%;
+    flex-shrink: 0;
+}
+.autocomplete .row div:first-child {
+    flex-shrink: 0;
+}
+.autocomplete .row:not(:last-of-type) {
+    border-bottom: 1px solid var(--color-background);
+}
+.autocomplete .args {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+/* Autocomplete arg coloring */
+.arg.purple {
+    color: mediumpurple;
+}
+.arg.orange {
+    color: orange;
+}
+.arg.red {
+    color: red;
+}
+.arg.pink {
+    color: hotpink;
+}
+.arg.green {
+    color: limegreen;
+}
+.arg.blue {
+    color: dodgerblue;
+}
+.arg.description b {
+    color: var(--color-secondary);
+}
+.arg.description {
+    gap: 0;
+    flex-shrink: 0;
+    color: darkgray;
+    overflow: hidden;
+}
+.arg.description:not(.count) {
+    flex-shrink: 1;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+}
+.arg.hint {
+    border-radius: 1rem;
+    font-size: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    margin-left: auto;
+}
+.arg.hint.verbose {
+    filter: opacity(0.5);
+}
+.arg.hint:not(.verbose) {
+    color: var(--color-background);
+    background: var(--color-primary);
+}
+/* Notification */
+#notification {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-surface);
+    padding: 0.5rem 1rem;
+    width: 30ch;
+    border-radius: 1rem;
+    box-shadow: 0 0.25rem 2rem 0 black;
+    translate: 0 -2rem;
+    opacity: 0;
+    scale: 0.8;
+    transition: translate ease var(--speed-default), scale ease var(--speed-default), opacity ease var(--speed-default);
+}
+#notification.visible {
+    translate: 0 0;
+    opacity: 1;
+    scale: 1;
+}
+#notification div {
+    display: flex;
+    gap: 0.5rem;
+    place-items: center;
+}
+#notification div .text {
+    display: flex;
+    flex-direction: column;
+    place-items: start;
+    gap: 0;
+}
+#notification div .text .description {
+    color: var(--color-secondary);
+    filter: opacity(0.5);
+    font-size: 0.8rem;
+}
+/* Responses */
+#responses {
+    padding-bottom: 10rem;
+}
+.response {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.625rem;
+    overflow: auto;
+}
+.response.empty {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    min-height: 20rem;
+    filter: opacity(0.5);
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+.response.empty .icon {
+    font-size: 2rem;
+}
+.response:not(:last-child) {
+    border-bottom: 1px solid var(--color-surface);
+}
+.response.error {
+    color: var(--color-danger);
+}
+.response .icon {
+    margin-top: 0.1rem;
+}
+.response .actions {
+    margin-left: auto;
+    display: flex;
+    gap: 0.5rem;
+}
+.response .actions .action {
+    font-size: 0.6rem;
+    padding: 0;
+    width: 1.4rem;
+    height: 1.4rem;
+    background-color: var(--color-background);
+    border-radius: 0.5rem;
+    outline-color: var(--color-surface);
+    outline-width: 1px;
+}
+.response .actions .action:hover {
+    background-color: var(--color-surface);
+}
+/* input dropzone */
+.file-dropzone {
+    display: flex;
+    gap: 1rem;
+    padding: 2rem;
+    width: 100%;
+    border: 0px;
+    outline: 2px solid color-mix(in srgb, var(--color-surface), transparent);
+    outline-offset: 2px;
+    background: color-mix(in srgb, var(--color-surface), transparent);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: outline var(--speed-default) ease, outline-offset var(--speed-default) ease;
+}
+.file-dropzone:not(:has(input)) {
+    cursor: default;
+}
+.file-dropzone input {
+    opacity: 0.01;
+    width: 1px;
+    height: 1px;
+}
+.file-dropzone:has(input):hover, .file-dropzone:has(input:focus-visible) {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+}
+.new-response .icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin-left: 1rem;
+}
+/* Histogram Styles */
+.chart {
+    position: relative;
+    width: 100%;
+    height: 20rem;
+    background-color: var(--color-surface);
+    border-radius: 10px;
+    overflow: hidden;
+}
+.axis, .axis-label {
+    position: absolute;
+    color: var(--color-secondary);
+    font-size: 0.75rem;
+    padding: 0.125rem;
+}
+.axis.x-axis {
+    bottom: 2rem;
+    left: calc(2.125rem + 8ch - 1px);
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    border-top: 2px solid var(--color-background);
+}
+.axis.y-axis {
+    top: 2rem;
+    bottom: 3.125rem;
+    width: 8ch;
+    left: 2rem;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    border-right: 2px solid var(--color-background);
+    text-align: right;
+}
+.axis.x-axis .axis-value {
+    min-width: 0;
+}
+.axis.y-axis .axis-value {
+    position: relative;
+    padding: 0.125rem;
+}
+.axis.y-axis .axis-value::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100vw;
+    border-bottom: 2px dotted var(--color-background);
+}
+.axis-label {
+    font-weight: bold;
+}
+.axis-label.y-axis {
+    top: 50%;
+    left: 0.5rem;
+    transform: rotate(-90deg) translateX(-50%);
+    transform-origin: 0% 0%;
+}
+.axis-label.x-axis {
+    bottom: 0.5rem;
+    left: 50%;
+    transform: translateX(-75%);
+}
+.chart-data {
+    position: absolute;
+    left: calc(3.125rem + 4ch);
+    right: 0;
+    top: calc(2rem + 2ch);
+    bottom: 3.25rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+}
+.chart-data .data-line {
+    width: 40px;
+    background: var(--color-primary);
+    border-radius: 10px 10px 0 0;
+}
+.chart-label {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    font-weight: bold;
+}
+/* Table Styles */
+table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-surface);
+}
+tr {
+    display: flex;
+}
+td, th {
+    display: flex;
+    justify-content: end;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    border: 0;
+    border-right: 1px solid var(--color-surface);
+    border-bottom: 1px solid var(--color-surface);
+}
+/* Icon */
+img.icon {
+    width: auto;
+    height: 1em;
+    user-select: none;
+}
+@media screen and (prefers-color-scheme: dark) {
+    img.icon {
+        filter: invert(1) hue-rotate(180deg);
+   }
+}
+/* Animation for loading icon */
+.spin {
+    animation: spin 1s infinite linear;
+}
+@keyframes spin {
+    0% {
+        rotate: 0deg;
+   }
+    100% {
+        rotate: 360deg;
+   }
+}

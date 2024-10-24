@@ -1,0 +1,17 @@
+{
+  "name": "weather_query",
+  "version": "1.0.0",
+  "description": "A project for the KU Engineering Design Challenge 2024",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "bun ./src/server.js",
+    "dev": "bun --watch ./src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@fortygazelle700",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/bun": "^1.1.10"
+  }
+}

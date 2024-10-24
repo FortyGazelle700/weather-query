@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WeatherQuery Client</title>
+    <!-- add css and js for styles and scripting -->
+    <link href="./index.css" rel="stylesheet" />
+    <script src="./index.js" defer type="module"></script>
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="/public/favicon.ico" />
+    <!-- Preload all images to reduce layout shifts -->
+    <link rel="preload" href="/icons/arrow-down-left.svg" as="image" />
+    <link rel="preload" href="/icons/arrow-left.svg" as="image" />
+    <link rel="preload" href="/icons/arrow-right.svg" as="image" />
+    <link rel="preload" href="/icons/arrow-up.svg" as="image" />
+    <link rel="preload" href="/icons/check.svg" as="image" />
+    <link rel="preload" href="/icons/circle-alert.svg" as="image" />
+    <link rel="preload" href="/icons/circle-help.svg" as="image" />
+    <link rel="preload" href="/icons/clipboard-copy.svg" as="image" />
+    <link rel="preload" href="/icons/cloud-drizzle.svg" as="image" />
+    <link rel="preload" href="/icons/cloud-fog.svg" as="image" />
+    <link rel="preload" href="/icons/cloud-rain.svg" as="image" />
+    <link rel="preload" href="/icons/cloud-snow.svg" as="image" />
+    <link rel="preload" href="/icons/cloud-sun.svg" as="image" />
+    <link rel="preload" href="/icons/cloud.svg" as="image" />
+    <link rel="preload" href="/icons/loader.svg" as="image" />
+    <link rel="preload" href="/icons/message-circle-dashed.svg" as="image" />
+    <link rel="preload" href="/icons/sun.svg" as="image" />
+    <link rel="preload" href="/icons/text-cursor.svg" as="image" />
+    <link rel="preload" href="/icons/upload.svg" as="image" />
+    <link rel="preload" href="/icons/zap.svg" as="image" />
+    <!-- Preload input to reduce calls -->
+    <link rel="preload" href="/api/input" as="fetch" />
+  </head>
+  <body>
+    <!-- Skeleton of application -->
+    <main>
+      <!-- Title -->
+      <h1 class="title">
+        <span class="primary">Weather</span>
+        <span class="secondary">Query</span>
+      </h1>
+      <h2 class="plug">Created with ❤️ by <a href="https://bluefla.me/" target="_blank">Drake Semchyshyn</a></h2>
+      <!-- Notification (copied or editing query) -->
+      <div id="notification"></div>
+      <!-- Responses (populated by JS if previous queries) -->
+      <div id="responses"></div>
+      <!-- Hint -->
+      <div class="arrow-hint pinned">
+        <img src="./icons/arrow-down-left.svg" class="icon" /> Start typing to create a query
+      </div>
+      <!-- Autocomplete (populated by JS) -->
+      <div id="autocomplete" class="autocomplete"></div>
+      <!-- Autocomplete Input -->
+      <form class="new-response" id="new-response">
+        <div class="icon-container">
+          <img class="icon" src="./icons/arrow-right.svg" />
+        </div>
+        <input placeholder="Query data..." id="input" />
+        <button class="size-icon secondary" type="button" id="help">
+          <img class="icon" src="./icons/circle-help.svg" />
+        </button>
+        <button class="size-icon" type="submit">
+          <img class="icon" src="./icons/arrow-up.svg" />
+        </button>
+      </form>
+    </main>
+  </body>
+</html>
